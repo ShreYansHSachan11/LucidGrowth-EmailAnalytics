@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import Folders from "./components/Folders";
 import { Suspense } from "react";
 import RowActions from "./components/RowActions";
