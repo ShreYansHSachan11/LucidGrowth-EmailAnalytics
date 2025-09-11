@@ -226,7 +226,7 @@ export default function Setup() {
                   className="w-full h-12 px-4 border-0 bg-white/70 backdrop-blur-sm rounded-xl focus:bg-white/90 transition-all duration-200"
                 />
                 <p className="mt-2 text-xs text-gray-500">
-                  For Gmail, use an App Password instead of your regular password
+                  For Gmail, use an App Password instead of your regular passcode
                 </p>
               </div>
             )}
