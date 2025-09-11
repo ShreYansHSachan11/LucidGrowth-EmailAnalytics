@@ -21,7 +21,8 @@ body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
 }
 
 /* Links */
@@ -131,6 +132,102 @@ a:hover {
 /* Ensure full width for main containers */
 main,
 .main-container {
+  width: 100%;
+  max-width: 100%;
+}/* Pr
+ofessional Typography */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* Heading Styles */
+.heading-primary {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 0.5rem;
+}
+
+.heading-secondary {
+  font-size: 1.875rem;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: #1e293b;
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.heading-secondary::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 3rem;
+  height: 3px;
+  background: linear-gradient(90deg, #0ea5e9, #3b82f6);
+  border-radius: 2px;
+}
+
+.heading-tertiary {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.015em;
+  color: #334155;
+  margin-bottom: 0.5rem;
+}
+
+.heading-quaternary {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #475569;
+  margin-bottom: 0.5rem;
+}
+
+.subheading {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #64748b;
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+  padding-left: 1rem;
+  border-left: 4px solid #0ea5e9;
+}
+
+/* Professional Text Styles */
+.text-professional {
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.text-emphasis {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* Full width containers */
+.container-full {
+  width: 100%;
+  max-width: none;
+}
+
+/* Ensure full width for main containers */
+main, .main-container {
   width: 100%;
   max-width: 100%;
 }

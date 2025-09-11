@@ -36,23 +36,23 @@ export default function RootLayout({
                     <div className="w-8 h-8 bg-gradient-to-br from-sky-400 to-blue-600 rounded-lg flex items-center justify-center">
                       <span className="text-white font-bold text-sm">L</span>
                     </div>
-                    <strong className="text-xl font-bold bg-gradient-to-r from-sky-600 to-blue-700 bg-clip-text text-transparent">
+                    <strong className="text-xl font-bold text-professional bg-gradient-to-r from-sky-600 to-blue-700 bg-clip-text text-transparent">
                       LucidGrowth
                     </strong>
                   </div>
                   
                   <nav className="hidden md:flex items-center gap-1">
-                    <a href="/" className="px-4 py-2 rounded-lg text-gray-700 hover:bg-sky-50 hover:text-sky-700 transition-all duration-200 font-medium">
-                      📧 Emails
+                    <a href="/" className="px-4 py-2 rounded-lg text-gray-700 hover:bg-sky-50 hover:text-sky-700 transition-all duration-200 text-professional">
+                      Emails
                     </a>
-                    <a href="/search" className="px-4 py-2 rounded-lg text-gray-700 hover:bg-sky-50 hover:text-sky-700 transition-all duration-200 font-medium">
-                      🔍 Search
+                    <a href="/search" className="px-4 py-2 rounded-lg text-gray-700 hover:bg-sky-50 hover:text-sky-700 transition-all duration-200 text-professional">
+                      Search
                     </a>
-                    <a href="/analytics" className="px-4 py-2 rounded-lg text-gray-700 hover:bg-sky-50 hover:text-sky-700 transition-all duration-200 font-medium">
-                      📊 Analytics
+                    <a href="/analytics" className="px-4 py-2 rounded-lg text-gray-700 hover:bg-sky-50 hover:text-sky-700 transition-all duration-200 text-professional">
+                      Analytics
                     </a>
-                    <a href="/sync" className="px-4 py-2 rounded-lg text-gray-700 hover:bg-sky-50 hover:text-sky-700 transition-all duration-200 font-medium">
-                      🔄 Sync
+                    <a href="/sync" className="px-4 py-2 rounded-lg text-gray-700 hover:bg-sky-50 hover:text-sky-700 transition-all duration-200 text-professional">
+                      Sync
                     </a>
                   </nav>
                 </div>
@@ -60,7 +60,7 @@ export default function RootLayout({
                 <div className="flex items-center gap-4">
                   <SyncIndicator />
                   <a href="/setup" className="btn-gradient text-sm">
-                    ✨ Add Account
+                    Add Account
                   </a>
                 </div>
               </div>

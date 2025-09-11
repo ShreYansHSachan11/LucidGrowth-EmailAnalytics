@@ -78,12 +78,12 @@ export default function Setup() {
   };
 
   const providers = [
-    { value: '', label: 'Select Provider', icon: '📧' },
-    { value: 'imap.gmail.com', label: 'Gmail', icon: '📮' },
-    { value: 'outlook.office365.com', label: 'Outlook/Office365', icon: '📨' },
-    { value: 'imap.mail.yahoo.com', label: 'Yahoo Mail', icon: '💌' },
-    { value: 'imap.zoho.com', label: 'Zoho Mail', icon: '📬' },
-    { value: 'custom', label: 'Custom IMAP Server', icon: '⚙️' },
+    { value: '', label: 'Select Provider' },
+    { value: 'imap.gmail.com', label: 'Gmail' },
+    { value: 'outlook.office365.com', label: 'Outlook/Office365' },
+    { value: 'imap.mail.yahoo.com', label: 'Yahoo Mail' },
+    { value: 'imap.zoho.com', label: 'Zoho Mail' },
+    { value: 'custom', label: 'Custom IMAP Server' },
   ];
 
   return (
@@ -92,12 +92,12 @@ export default function Setup() {
         {/* Header */}
         <div className="glass-card p-8 text-center">
           <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center float">
-            <span className="text-2xl">✨</span>
+            <div className="w-6 h-6 bg-white rounded-lg"></div>
           </div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-2">
+          <h1 className="heading-primary">
             Connect Email Account
           </h1>
-          <p className="text-gray-600">Add your IMAP email account to start syncing and analyzing emails</p>
+          <p className="subheading">Add your IMAP email account to start syncing and analyzing emails</p>
         </div>
 
         {/* Form */}
@@ -105,8 +105,8 @@ export default function Setup() {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Provider Selection */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-3">
-                📧 Email Provider
+              <label className="section-title">
+                Email Provider
               </label>
               <div className="relative">
                 <select
@@ -117,7 +117,7 @@ export default function Setup() {
                 >
                   {providers.map(provider => (
                     <option key={provider.value} value={provider.value}>
-                      {provider.icon} {provider.label}
+                      {provider.label}
                     </option>
                   ))}
                 </select>
@@ -130,8 +130,8 @@ export default function Setup() {
             {/* Custom Server Settings */}
             {formData.host === 'custom' && (
               <div className="space-y-4 p-4 bg-sky-50 rounded-xl border border-sky-100">
-                <h4 className="font-semibold text-sky-800 flex items-center gap-2">
-                  ⚙️ Custom Server Settings
+                <h4 className="heading-quaternary text-sky-800">
+                  Custom Server Settings
                 </h4>
                 <input
                   type="text"
@@ -158,7 +158,7 @@ export default function Setup() {
                       onChange={handleInputChange}
                       className="w-4 h-4 text-sky-600 rounded"
                     />
-                    <span className="text-sm font-medium text-gray-700">🔒 SSL/TLS</span>
+                    <span className="text-sm font-medium text-gray-700">SSL/TLS</span>
                   </label>
                 </div>
               </div>
@@ -166,8 +166,8 @@ export default function Setup() {
 
             {/* Authentication Method */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-3">
-                🔐 Authentication Method
+              <label className="section-title">
+                Authentication Method
               </label>
               <div className="relative">
                 <select
@@ -176,9 +176,9 @@ export default function Setup() {
                   onChange={handleInputChange}
                   className="w-full h-12 pl-4 pr-10 border-0 bg-white/70 backdrop-blur-sm rounded-xl focus:bg-white/90 transition-all duration-200 appearance-none cursor-pointer"
                 >
-                  <option value="OAUTH2">🔑 OAuth2 - Google (required for Gmail)</option>
-                  <option value="PLAIN">🔒 Username & Password</option>
-                  <option value="LOGIN">📝 LOGIN</option>
+                  <option value="OAUTH2">OAuth2 - Google (required for Gmail)</option>
+                  <option value="PLAIN">Username & Password</option>
+                  <option value="LOGIN">LOGIN</option>
                 </select>
                 <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
                   ▼
@@ -196,8 +196,8 @@ export default function Setup() {
 
             {/* Email Address */}
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-3">
-                📧 Email Address
+              <label className="section-title">
+                Email Address
               </label>
               <input
                 type="email"
@@ -213,8 +213,8 @@ export default function Setup() {
             {/* Password (if not OAuth2) */}
             {formData.authMethod !== 'OAUTH2' && (
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-3">
-                  🔑 Password
+                <label className="section-title">
+                  Password
                 </label>
                 <input
                   type="password"
@@ -226,7 +226,7 @@ export default function Setup() {
                   className="w-full h-12 px-4 border-0 bg-white/70 backdrop-blur-sm rounded-xl focus:bg-white/90 transition-all duration-200"
                 />
                 <p className="mt-2 text-xs text-gray-500">
-                  💡 For Gmail, use an App Password instead of your regular password
+                  For Gmail, use an App Password instead of your regular password
                 </p>
               </div>
             )}
@@ -234,8 +234,8 @@ export default function Setup() {
             {/* OAuth2 Token (if OAuth2) */}
             {formData.authMethod === 'OAUTH2' && (
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-3">
-                  🎫 OAuth2 Access Token
+                <label className="section-title">
+                  OAuth2 Access Token
                 </label>
                 <input
                   type="text"
@@ -267,7 +267,7 @@ export default function Setup() {
                       Redirecting to Google...
                     </div>
                   ) : (
-                    '🚀 Sign in with Google'
+                    'Sign in with Google'
                   )}
                 </button>
               ) : (
@@ -312,16 +312,16 @@ export default function Setup() {
 
         {/* Help Section */}
         <div className="glass-card p-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-            💡 Need Help?
+          <h3 className="heading-secondary">
+            Need Help?
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
             <div className="bg-gradient-to-br from-sky-50 to-blue-50 p-4 rounded-xl border border-sky-100">
-              <h4 className="font-semibold text-sky-800 mb-2">Gmail Users</h4>
+              <h4 className="heading-quaternary text-sky-800">Gmail Users</h4>
               <p className="text-sky-700">Use OAuth2 authentication for the most secure connection. We'll redirect you to Google's secure login.</p>
             </div>
             <div className="bg-gradient-to-br from-emerald-50 to-teal-50 p-4 rounded-xl border border-emerald-100">
-              <h4 className="font-semibold text-emerald-800 mb-2">Other Providers</h4>
+              <h4 className="heading-quaternary text-emerald-800">Other Providers</h4>
               <p className="text-emerald-700">Use your regular email and password, or create an app-specific password for better security.</p>
             </div>
           </div>

@@ -28,8 +28,8 @@ export default async function Home() {
           {/* Sidebar */}
           <aside className="glass-card p-6 h-fit">
             <div className="mb-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                📁 Folders
+              <h3 className="section-title">
+                Folders
               </h3>
               <Suspense fallback={
                 <div className="flex items-center gap-2 text-gray-500">
@@ -62,17 +62,17 @@ export default async function Home() {
             <div className="glass-card p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent">
+                  <h1 className="heading-primary">
                     Email Dashboard
                   </h1>
-                  <p className="text-gray-600 mt-1">Manage your emails with style</p>
+                  <p className="subheading">Manage your emails with professional efficiency</p>
                 </div>
                 <div className="flex gap-3">
                   <button className="px-4 py-2 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-all duration-200 text-gray-700 font-medium">
-                    🔄 Refresh
+                    Refresh
                   </button>
                   <button className="btn-gradient">
-                    ✉️ Compose
+                    Compose
                   </button>
                 </div>
               </div>
@@ -82,12 +82,12 @@ export default async function Home() {
             {emails.length === 0 ? (
               <div className="glass-card p-12 text-center">
                 <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-sky-100 to-blue-100 rounded-full flex items-center justify-center">
-                  <span className="text-4xl">📧</span>
+                  <div className="w-8 h-8 bg-sky-500 rounded-lg"></div>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">No Emails Found</h3>
+                <h3 className="heading-tertiary">No Emails Found</h3>
                 <p className="text-gray-600 mb-6">Start by syncing your email accounts to see your messages here.</p>
                 <a href="/setup" className="btn-gradient inline-block">
-                  🚀 Get Started
+                  Get Started
                 </a>
                 <p className="text-xs text-gray-400 mt-4">
                   Backend API: {process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001"}
@@ -96,9 +96,9 @@ export default async function Home() {
             ) : (
               <div className="glass-card overflow-hidden">
                 <div className="p-6 border-b border-gray-100">
-                  <h2 className="text-xl font-semibold text-gray-800 flex items-center gap-2">
-                    📬 Recent Messages
-                    <span className="text-sm font-normal text-gray-500">({emails.length})</span>
+                  <h2 className="heading-secondary">
+                    Recent Messages
+                    <span className="text-sm font-normal text-gray-500 ml-2">({emails.length})</span>
                   </h2>
                 </div>
                 

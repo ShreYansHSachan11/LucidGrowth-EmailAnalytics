@@ -49,12 +49,12 @@ export default function SyncControl() {
         {/* Header */}
         <div className="glass-card p-8 text-center">
           <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center float">
-            <span className="text-2xl">🔄</span>
+            <div className="w-6 h-6 bg-white rounded-lg"></div>
           </div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-2">
+          <h1 className="heading-primary">
             Sync Control
           </h1>
-          <p className="text-gray-600">Manage your email synchronization process</p>
+          <p className="subheading">Manage your email synchronization process</p>
         </div>
 
         {/* Status Card */}
@@ -65,10 +65,10 @@ export default function SyncControl() {
                 ? 'bg-gradient-to-br from-orange-400 to-red-500' 
                 : 'bg-gradient-to-br from-emerald-400 to-teal-500'
             }`}>
-              <span className="text-white text-lg">{isPaused ? '⏸️' : '▶️'}</span>
+              <div className="w-4 h-4 bg-white rounded"></div>
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-gray-800">
+              <h3 className="heading-quaternary">
                 Sync Status: {isPaused ? 'Paused' : 'Active'}
               </h3>
               <p className="text-sm text-gray-600">
@@ -97,7 +97,7 @@ export default function SyncControl() {
                   Processing...
                 </div>
               ) : (
-                '⏸️ Pause Sync'
+                'Pause Sync'
               )}
             </button>
 
@@ -116,7 +116,7 @@ export default function SyncControl() {
                   Processing...
                 </div>
               ) : (
-                '▶️ Resume Sync'
+                'Resume Sync'
               )}
             </button>
           </div>
@@ -129,9 +129,9 @@ export default function SyncControl() {
                 : 'bg-red-50 border-red-500 text-red-700'
             }`}>
               <div className="flex items-center gap-2">
-                <span className="text-lg">
-                  {message.includes('✅') ? '✅' : '❌'}
-                </span>
+                <div className={`w-4 h-4 rounded-full ${
+                  message.includes('✅') ? 'bg-emerald-500' : 'bg-red-500'
+                }`}></div>
                 <span className="font-medium">{message}</span>
               </div>
             </div>
@@ -143,9 +143,9 @@ export default function SyncControl() {
           <div className="glass-card p-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
-                <span className="text-white">ℹ️</span>
+                <div className="w-4 h-4 bg-white rounded"></div>
               </div>
-              <h3 className="font-semibold text-gray-800">How it Works</h3>
+              <h3 className="heading-quaternary">How it Works</h3>
             </div>
             <ul className="space-y-2 text-sm text-gray-600">
               <li className="flex items-start gap-2">
@@ -166,22 +166,22 @@ export default function SyncControl() {
           <div className="glass-card p-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center">
-                <span className="text-white">⚙️</span>
+                <div className="w-4 h-4 bg-white rounded"></div>
               </div>
-              <h3 className="font-semibold text-gray-800">Quick Actions</h3>
+              <h3 className="heading-quaternary">Quick Actions</h3>
             </div>
             <div className="space-y-3">
               <a
                 href="/setup"
                 className="block w-full py-2 px-4 bg-gradient-to-r from-sky-500 to-blue-600 text-white rounded-lg hover:from-sky-600 hover:to-blue-700 transition-all duration-200 text-center font-medium"
               >
-                ➕ Add Email Account
+                Add Email Account
               </a>
               <a
                 href="/analytics"
                 className="block w-full py-2 px-4 bg-white border border-gray-200 text-gray-700 rounded-lg hover:bg-gray-50 transition-all duration-200 text-center font-medium"
               >
-                📊 View Analytics
+                View Analytics
               </a>
             </div>
           </div>

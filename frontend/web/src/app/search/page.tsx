@@ -25,12 +25,12 @@ export default async function Search({
         {/* Header */}
         <div className="glass-card p-8 text-center">
           <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-sky-400 to-blue-600 rounded-2xl flex items-center justify-center float">
-            <span className="text-2xl">🔍</span>
+            <div className="w-6 h-6 bg-white rounded-lg"></div>
           </div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text text-transparent mb-2">
+          <h1 className="heading-primary">
             Email Search
           </h1>
-          <p className="text-gray-600">Find exactly what you're looking for</p>
+          <p className="subheading">Find exactly what you're looking for</p>
         </div>
 
         {/* Search Form */}
@@ -44,7 +44,7 @@ export default async function Search({
                 className="pl-12 h-12 text-lg border-0 bg-white/50 backdrop-blur-sm focus:bg-white/80 transition-all duration-200"
               />
               <div className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
-                🔍
+                <div className="w-4 h-4 bg-gray-400 rounded"></div>
               </div>
             </div>
             <Button 
@@ -71,17 +71,17 @@ export default async function Search({
         {!q ? (
           <div className="glass-card p-12 text-center">
             <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-sky-100 to-blue-100 rounded-full flex items-center justify-center">
-              <span className="text-4xl">💭</span>
+              <div className="w-8 h-8 bg-sky-500 rounded-lg"></div>
             </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-2">Start Your Search</h3>
+            <h3 className="heading-tertiary">Start Your Search</h3>
             <p className="text-gray-600">Enter keywords to find emails, subjects, or senders</p>
           </div>
         ) : results.length === 0 ? (
           <div className="glass-card p-12 text-center">
             <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-orange-100 to-red-100 rounded-full flex items-center justify-center">
-              <span className="text-4xl">😔</span>
+              <div className="w-8 h-8 bg-orange-500 rounded-lg"></div>
             </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-2">No Results Found</h3>
+            <h3 className="heading-tertiary">No Results Found</h3>
             <p className="text-gray-600 mb-4">
               No emails found for <strong>"{q}"</strong>
             </p>
@@ -90,9 +90,9 @@ export default async function Search({
         ) : (
           <div className="glass-card overflow-hidden">
             <div className="p-6 border-b border-gray-100">
-              <h2 className="text-xl font-semibold text-gray-800 flex items-center gap-2">
-                📋 Search Results
-                <span className="text-sm font-normal text-gray-500">({results.length})</span>
+              <h2 className="heading-secondary">
+                Search Results
+                <span className="text-sm font-normal text-gray-500 ml-2">({results.length})</span>
               </h2>
             </div>
             
@@ -106,7 +106,7 @@ export default async function Search({
                     <div className="flex items-start gap-4">
                       {/* Icon */}
                       <div className="w-12 h-12 bg-gradient-to-br from-sky-500 to-blue-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
-                        📧
+                        <div className="w-4 h-4 bg-white rounded"></div>
                       </div>
 
                       {/* Content */}
@@ -116,11 +116,11 @@ export default async function Search({
                         </h3>
                         
                         <div className="flex items-center gap-4 text-sm text-gray-600 mb-2">
-                          <span className="flex items-center gap-1">
-                            👤 {(e.from || []).join(", ") || "Unknown"}
+                          <span className="text-emphasis">
+                            From: {(e.from || []).join(", ") || "Unknown"}
                           </span>
-                          <span className="flex items-center gap-1">
-                            📅 {e.date ? new Date(e.date).toLocaleDateString() : "No date"}
+                          <span className="text-professional">
+                            {e.date ? new Date(e.date).toLocaleDateString() : "No date"}
                           </span>
                         </div>
                         
@@ -133,7 +133,7 @@ export default async function Search({
 
                       {/* Arrow */}
                       <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-sky-500">
-                        →
+                        <div className="w-2 h-2 bg-sky-500 rounded-full"></div>
                       </div>
                     </div>
                   </a>
