@@ -67,16 +67,16 @@ export default function SyncIndicator() {
     };
   }, []);
 
-  const dotColor = !isOnline 
-    ? 'bg-red-500' 
-    : status.running 
+  const dotColor = status.running 
     ? 'bg-green-500' 
+    : isOnline
+    ? 'bg-blue-500'
     : 'bg-gray-400';
     
-  const text = !isOnline 
-    ? 'Offline' 
-    : status.running
+  const text = status.running
     ? `Syncing ${status.account || ''}${status.folderPath ? ` • ${status.folderPath}` : ''}`
+    : isOnline
+    ? 'Online'
     : 'Ready';
 
   return (

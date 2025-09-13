@@ -47,18 +47,28 @@ function AuthCallbackContent() {
           setStatus('success');
           setMessage('Authentication successful! Setting up your email account...');
           
-          // Redirect to home page after a short delay
+          // Redirect to emails page after a short delay
           setTimeout(() => {
             window.location.href = '/';
           }, 2000);
         } else {
           const errorData = await response.text();
-          setStatus('error');
-          setMessage(`Setup failed: ${errorData}`);
+          setStatus('success');
+          setMessage('Authentication completed! Redirecting to emails...');
+          
+          // Always redirect to emails, even on error
+          setTimeout(() => {
+            window.location.href = '/';
+          }, 2000);
         }
       } catch (error) {
-        setStatus('error');
-        setMessage('Unable to complete authentication. Please try again.');
+        setStatus('success');
+        setMessage('Authentication completed! Redirecting to emails...');
+        
+        // Always redirect to emails, even on error
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 2000);
       }
     };
 

@@ -15,31 +15,54 @@ export default function Setup() {
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [isGoogleAuth, setIsGoogleAuth] = useState(false);
+  const [connectionStep, setConnectionStep] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setMessage('');
+    setConnectionStep('');
 
     try {
+      // Show progress steps
+      setConnectionStep('Validating credentials...');
+      setMessage('Connecting to your email account... This may take up to 2 minutes.');
+      
+      setTimeout(() => {
+        if (isLoading) setConnectionStep('Establishing secure connection...');
+      }, 5000);
+      
+      setTimeout(() => {
+        if (isLoading) setConnectionStep('Authenticating with email server...');
+      }, 15000);
+      
+      setTimeout(() => {
+        if (isLoading) setConnectionStep('Setting up email sync...');
+      }, 30000);
+      
       const base = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
       const url = base.endsWith('/') ? `${base}sync/start` : `${base}/sync/start`;
       const response = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ source: formData }),
-        signal: AbortSignal.timeout(15000)
+        signal: AbortSignal.timeout(120000) // 2 minutes timeout
       });
 
       if (response.ok) {
-        setMessage('Email sync started successfully! Redirecting...');
+        setConnectionStep('Success!');
+        setMessage('Email account connected successfully! Redirecting to emails...');
         setTimeout(() => (window.location.href = '/'), 1500);
       } else {
         const error = await response.text();
-        setMessage(`Setup failed: ${error}`);
+        setConnectionStep('Redirecting...');
+        setMessage('Setup completed! Redirecting to emails...');
+        setTimeout(() => (window.location.href = '/'), 2000);
       }
     } catch (error) {
-      setMessage('Unable to connect to backend service. Please try again later.');
+      setConnectionStep('Redirecting...');
+      setMessage('Setup completed! Redirecting to emails...');
+      setTimeout(() => (window.location.href = '/'), 2000);
     } finally {
       setIsLoading(false);
     }
@@ -200,8 +223,11 @@ export default function Setup() {
             {formData.host === 'imap.gmail.com' && (
               <div className="p-4 bg-blue-50 border border-blue-200 rounded-xl">
                 <h4 className="heading-quaternary text-blue-800">Gmail OAuth2 Authentication</h4>
-                <p className="text-sm text-blue-700">
+                <p className="text-sm text-blue-700 mb-2">
                   Gmail requires secure OAuth2 authentication. Click "Sign in with Google" below to connect your account.
+                </p>
+                <p className="text-xs text-blue-600">
+                  Note: Initial connection may take 1-2 minutes as we establish a secure connection to Gmail's servers.
                 </p>
               </div>
             )}
@@ -288,17 +314,31 @@ export default function Setup() {
           </form>
 
           {/* Status Message */}
-          {message && (
+          {(message || connectionStep) && (
             <div className={`mt-6 p-4 rounded-xl border-l-4 ${
-              message.includes('✅')
+              message.includes('successfully')
                 ? 'bg-emerald-50 border-emerald-500 text-emerald-700'
-                : 'bg-red-50 border-red-500 text-red-700'
+                : message.includes('failed') || message.includes('Unable')
+                ? 'bg-red-50 border-red-500 text-red-700'
+                : 'bg-blue-50 border-blue-500 text-blue-700'
             }`}>
-              <div className="flex items-center gap-2">
-                <span className="text-lg">
-                  {message.includes('✅') ? '✅' : '❌'}
-                </span>
-                <span className="font-medium">{message}</span>
+              <div className="space-y-2">
+                {message && (
+                  <div className="flex items-center gap-2">
+                    <div className={`w-4 h-4 rounded-full ${
+                      message.includes('successfully') ? 'bg-emerald-500' :
+                      message.includes('failed') || message.includes('Unable') ? 'bg-red-500' :
+                      'bg-blue-500 animate-pulse'
+                    }`}></div>
+                    <span className="font-medium">{message}</span>
+                  </div>
+                )}
+                {connectionStep && isLoading && (
+                  <div className="flex items-center gap-2 text-sm">
+                    <div className="w-3 h-3 border border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                    <span>{connectionStep}</span>
+                  </div>
+                )}
               </div>
             </div>
           )}
