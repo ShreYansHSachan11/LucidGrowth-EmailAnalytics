@@ -4,10 +4,10 @@ import { useState } from 'react';
 
 export default function Setup() {
   const [formData, setFormData] = useState({
-    host: '',
+    host: 'imap.gmail.com',
     port: 993,
     secure: true,
-    authMethod: 'PLAIN',
+    authMethod: 'OAUTH2',
     user: '',
     pass: '',
     accessToken: '',
@@ -47,15 +47,22 @@ export default function Setup() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]:
-        type === 'number'
-          ? parseInt(value)
-          : type === 'checkbox'
-          ? (e.target as HTMLInputElement).checked
-          : value,
-    }));
+    const newValue = type === 'number'
+      ? parseInt(value)
+      : type === 'checkbox'
+      ? (e.target as HTMLInputElement).checked
+      : value;
+
+    setFormData(prev => {
+      const updated = { ...prev, [name]: newValue };
+      
+      // Auto-set OAuth2 for Gmail
+      if (name === 'host' && value === 'imap.gmail.com') {
+        updated.authMethod = 'OAUTH2';
+      }
+      
+      return updated;
+    });
   };
 
   const handleGoogleAuth = async () => {
@@ -83,12 +90,9 @@ export default function Setup() {
   };
 
   const providers = [
-    { value: '', label: 'Select Provider' },
     { value: 'imap.gmail.com', label: 'Gmail' },
     { value: 'outlook.office365.com', label: 'Outlook/Office365' },
-    { value: 'imap.mail.yahoo.com', label: 'Yahoo Mail' },
-    { value: 'imap.zoho.com', label: 'Zoho Mail' },
-    { value: 'custom', label: 'Custom IMAP Server' },
+    { value: 'custom', label: 'Other Email Provider' },
   ];
 
   return (
@@ -169,53 +173,58 @@ export default function Setup() {
               </div>
             )}
 
-            {/* Authentication Method */}
-            <div>
-              <label className="section-title">
-                Authentication Method
-              </label>
-              <div className="relative">
-                <select
-                  name="authMethod"
-                  value={formData.authMethod}
-                  onChange={handleInputChange}
-                  className="w-full h-12 pl-4 pr-10 border-0 bg-white/70 backdrop-blur-sm rounded-xl focus:bg-white/90 transition-all duration-200 appearance-none cursor-pointer"
-                >
-                  <option value="OAUTH2">OAuth2 - Google (required for Gmail)</option>
-                  <option value="PLAIN">Username & Password</option>
-                  <option value="LOGIN">LOGIN</option>
-                </select>
-                <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                  ▼
+            {/* Authentication Method - Only show for non-Gmail */}
+            {formData.host !== 'imap.gmail.com' && (
+              <div>
+                <label className="section-title">
+                  Authentication Method
+                </label>
+                <div className="relative">
+                  <select
+                    name="authMethod"
+                    value={formData.authMethod}
+                    onChange={handleInputChange}
+                    className="w-full h-12 pl-4 pr-10 border-0 bg-white/70 backdrop-blur-sm rounded-xl focus:bg-white/90 transition-all duration-200 appearance-none cursor-pointer"
+                  >
+                    <option value="PLAIN">Username & Password</option>
+                    <option value="LOGIN">LOGIN</option>
+                  </select>
+                  <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
+                    ▼
+                  </div>
                 </div>
               </div>
-              
-              {formData.host === 'imap.gmail.com' && formData.authMethod !== 'OAUTH2' && (
-                <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-xl">
-                  <p className="text-sm text-red-700 flex items-center gap-2">
-                    ⚠️ Gmail requires OAuth2. Password login is no longer supported.
-                  </p>
-                </div>
-              )}
-            </div>
+            )}
 
-            {/* Email Address */}
-            <div>
-              <label className="section-title">
-                Email Address
-              </label>
-              <input
-                type="email"
-                name="user"
-                placeholder="your.email@example.com"
-                value={formData.user}
-                onChange={handleInputChange}
-                required
-                className="w-full h-12 px-4 border-0 bg-white/70 backdrop-blur-sm rounded-xl focus:bg-white/90 transition-all duration-200"
-              />
-            </div>
+            {/* Gmail OAuth Info */}
+            {formData.host === 'imap.gmail.com' && (
+              <div className="p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                <h4 className="heading-quaternary text-blue-800">Gmail OAuth2 Authentication</h4>
+                <p className="text-sm text-blue-700">
+                  Gmail requires secure OAuth2 authentication. Click "Sign in with Google" below to connect your account.
+                </p>
+              </div>
+            )}
 
-            {/* Password (if not OAuth2) */}
+            {/* Email Address - Only for non-Gmail OAuth */}
+            {!(formData.host === 'imap.gmail.com' && formData.authMethod === 'OAUTH2') && (
+              <div>
+                <label className="section-title">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  name="user"
+                  placeholder="your.email@example.com"
+                  value={formData.user}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full h-12 px-4 border-0 bg-white/70 backdrop-blur-sm rounded-xl focus:bg-white/90 transition-all duration-200"
+                />
+              </div>
+            )}
+
+            {/* Password - Only for non-OAuth2 */}
             {formData.authMethod !== 'OAUTH2' && (
               <div>
                 <label className="section-title">
@@ -228,26 +237,6 @@ export default function Setup() {
                   value={formData.pass}
                   onChange={handleInputChange}
                   required
-                  className="w-full h-12 px-4 border-0 bg-white/70 backdrop-blur-sm rounded-xl focus:bg-white/90 transition-all duration-200"
-                />
-                <p className="mt-2 text-xs text-gray-500">
-                  For Gmail, use an App Password instead of your regular passcode
-                </p>
-              </div>
-            )}
-
-            {/* OAuth2 Token (if OAuth2) */}
-            {formData.authMethod === 'OAUTH2' && (
-              <div>
-                <label className="section-title">
-                  OAuth2 Access Token
-                </label>
-                <input
-                  type="text"
-                  name="accessToken"
-                  placeholder="OAuth2 access token (auto-filled after Google auth)"
-                  value={formData.accessToken}
-                  onChange={handleInputChange}
                   className="w-full h-12 px-4 border-0 bg-white/70 backdrop-blur-sm rounded-xl focus:bg-white/90 transition-all duration-200"
                 />
               </div>
@@ -268,7 +257,7 @@ export default function Setup() {
                 >
                   {isGoogleAuth ? (
                     <div className="flex items-center justify-center gap-3">
-                      <div className="w-5 h-5 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                       Redirecting to Google...
                     </div>
                   ) : (
@@ -291,7 +280,7 @@ export default function Setup() {
                       Connecting...
                     </div>
                   ) : (
-                    '🔗 Connect & Start Sync'
+                    'Connect & Start Sync'
                   )}
                 </button>
               )}
@@ -315,22 +304,7 @@ export default function Setup() {
           )}
         </div>
 
-        {/* Help Section */}
-        <div className="glass-card p-6">
-          <h3 className="heading-secondary">
-            Need Help?
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-            <div className="bg-gradient-to-br from-sky-50 to-blue-50 p-4 rounded-xl border border-sky-100">
-              <h4 className="heading-quaternary text-sky-800">Gmail Users</h4>
-              <p className="text-sky-700">Use OAuth2 authentication for the most secure connection. We'll redirect you to Google's secure login.</p>
-            </div>
-            <div className="bg-gradient-to-br from-emerald-50 to-teal-50 p-4 rounded-xl border border-emerald-100">
-              <h4 className="heading-quaternary text-emerald-800">Other Providers</h4>
-              <p className="text-emerald-700">Use your regular email and password, or create an app-specific password for better security.</p>
-            </div>
-          </div>
-        </div>
+
       </div>
     </div>
   );
