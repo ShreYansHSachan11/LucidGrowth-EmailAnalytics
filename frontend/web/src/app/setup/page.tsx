@@ -23,21 +23,23 @@ export default function Setup() {
 
     try {
       const base = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-      const response = await fetch(`${base}/sync/start`, {
+      const url = base.endsWith('/') ? `${base}sync/start` : `${base}/sync/start`;
+      const response = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ source: formData }),
+        signal: AbortSignal.timeout(15000)
       });
 
       if (response.ok) {
-        setMessage('✅ Email sync started successfully! Redirecting...');
+        setMessage('Email sync started successfully! Redirecting...');
         setTimeout(() => (window.location.href = '/'), 1500);
       } else {
         const error = await response.text();
-        setMessage(`❌ Error: ${error}`);
+        setMessage(`Setup failed: ${error}`);
       }
     } catch (error) {
-      setMessage(`❌ Connection error: ${error}`);
+      setMessage('Unable to connect to backend service. Please try again later.');
     } finally {
       setIsLoading(false);
     }
@@ -62,17 +64,20 @@ export default function Setup() {
 
     try {
       const base = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-      const response = await fetch(`${base}/auth/google`);
+      const url = base.endsWith('/') ? `${base}auth/google` : `${base}/auth/google`;
+      const response = await fetch(url, {
+        signal: AbortSignal.timeout(10000)
+      });
       const data = await response.json();
 
       if (data.authUrl) {
         window.location.href = data.authUrl;
       } else {
-        setMessage(`❌ ${data.error || 'Failed to get Google auth URL'}`);
+        setMessage(`${data.error || 'Failed to get Google auth URL'}`);
         setIsGoogleAuth(false);
       }
     } catch (error) {
-      setMessage(`❌ Error: ${error}`);
+      setMessage('Unable to connect to authentication service');
       setIsGoogleAuth(false);
     }
   };

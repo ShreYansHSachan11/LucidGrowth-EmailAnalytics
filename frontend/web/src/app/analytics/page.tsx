@@ -2,7 +2,11 @@ export const dynamic = "force-dynamic";
 async function fetchSummary() {
   const base = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
   try {
-    const res = await fetch(`${base}/analytics/summary`, { next: { revalidate: 0 } });
+    const url = base.endsWith('/') ? `${base}analytics/summary` : `${base}/analytics/summary`;
+    const res = await fetch(url, { 
+      next: { revalidate: 0 },
+      signal: AbortSignal.timeout(10000)
+    });
     if (!res.ok) {
       console.error('Failed to fetch analytics:', res.status, res.statusText);
       return { byEsp: [], byDomain: [] } as any;

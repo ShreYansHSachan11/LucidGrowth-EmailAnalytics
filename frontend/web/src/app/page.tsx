@@ -8,7 +8,11 @@ import Time from "./components/Time";
 async function fetchEmails() {
   const base = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
   try {
-    const res = await fetch(`${base}/emails`, { next: { revalidate: 0 } });
+    const url = base.endsWith('/') ? `${base}emails` : `${base}/emails`;
+    const res = await fetch(url, { 
+      next: { revalidate: 0 },
+      signal: AbortSignal.timeout(10000) // 10 second timeout
+    });
     if (!res.ok) {
       console.error("Failed to fetch emails:", res.status, res.statusText);
       return [] as any[];

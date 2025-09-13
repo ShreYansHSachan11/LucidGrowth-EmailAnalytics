@@ -4,10 +4,22 @@ import { Button } from "@/components/ui/button";
 
 async function searchEmails(q: string) {
   const base = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
-  const url = `${base}/search/emails?q=${encodeURIComponent(q)}`;
-  const res = await fetch(url, { cache: "no-store" });
-  if (!res.ok) return [];
-  return res.json();
+  try {
+    const baseUrl = base.endsWith('/') ? base.slice(0, -1) : base;
+    const url = `${baseUrl}/search/emails?q=${encodeURIComponent(q)}`;
+    const res = await fetch(url, { 
+      cache: "no-store",
+      signal: AbortSignal.timeout(10000)
+    });
+    if (!res.ok) {
+      console.error("Search failed:", res.status, res.statusText);
+      return [];
+    }
+    return res.json();
+  } catch (error) {
+    console.error("Error searching emails:", error);
+    return [];
+  }
 }
 
 export default async function Search({

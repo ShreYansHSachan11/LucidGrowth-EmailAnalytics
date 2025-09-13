@@ -11,15 +11,19 @@ export default function SyncControl() {
     setIsLoading(true);
     try {
       const base = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-      const res = await fetch(`${base}/sync/pause`, { method: 'POST' });
+      const url = base.endsWith('/') ? `${base}sync/pause` : `${base}/sync/pause`;
+      const res = await fetch(url, { 
+        method: 'POST',
+        signal: AbortSignal.timeout(10000)
+      });
       if (res.ok) {
         setIsPaused(true);
-        setMessage('✅ Sync paused successfully');
+        setMessage('Sync paused successfully');
       } else {
-        setMessage('❌ Failed to pause sync');
+        setMessage('Failed to pause sync - endpoint may not be available');
       }
     } catch (err) {
-      setMessage(`❌ Error: ${err}`);
+      setMessage('Unable to connect to backend service');
     } finally {
       setIsLoading(false);
     }
@@ -29,15 +33,19 @@ export default function SyncControl() {
     setIsLoading(true);
     try {
       const base = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-      const res = await fetch(`${base}/sync/resume`, { method: 'POST' });
+      const url = base.endsWith('/') ? `${base}sync/resume` : `${base}/sync/resume`;
+      const res = await fetch(url, { 
+        method: 'POST',
+        signal: AbortSignal.timeout(10000)
+      });
       if (res.ok) {
         setIsPaused(false);
-        setMessage('✅ Sync resumed successfully');
+        setMessage('Sync resumed successfully');
       } else {
-        setMessage('❌ Failed to resume sync');
+        setMessage('Failed to resume sync - endpoint may not be available');
       }
     } catch (err) {
-      setMessage(`❌ Error: ${err}`);
+      setMessage('Unable to connect to backend service');
     } finally {
       setIsLoading(false);
     }
