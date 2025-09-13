@@ -1,4 +1,5 @@
 import { Controller, Get, Query, Res } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import type { Response } from 'express';
 import { GoogleOAuthService } from './google-oauth.service';
 import { SyncService } from '../sync.service';
@@ -8,7 +9,8 @@ export class AuthController {
   constructor(
     private readonly googleOAuthService: GoogleOAuthService,
     private readonly syncService: SyncService,
-  ) {}
+    private readonly configService: ConfigService,
+  ) { }
 
   @Get('google')
   getGoogleAuthUrl() {
@@ -16,7 +18,7 @@ export class AuthController {
       const authUrl = this.googleOAuthService.getAuthUrl();
       return { authUrl };
     } catch (error) {
-      return { 
+      return {
         error: 'Google OAuth not configured. Please set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET environment variables.',
         details: String(error)
       };
@@ -29,12 +31,14 @@ export class AuthController {
     @Query('error') error: string,
     @Res() res: Response,
   ) {
+    const frontendUrl = this.configService.get<string>('FRONTEND_URL') || 'http://localhost:3000';
+
     if (error) {
-      return res.redirect(`http://localhost:3000/setup?error=${encodeURIComponent(error)}`);
+      return res.redirect(`${frontendUrl}/setup?error=${encodeURIComponent(error)}`);
     }
 
     if (!code) {
-      return res.redirect('http://localhost:3000/setup?error=No authorization code received');
+      return res.redirect(`${frontendUrl}/setup?error=No authorization code received`);
     }
 
     try {
@@ -52,9 +56,9 @@ export class AuthController {
         },
       });
 
-      return res.redirect(`http://localhost:3000/?success=${encodeURIComponent('Gmail connected successfully')}`);
+      return res.redirect(`${frontendUrl}/?success=${encodeURIComponent('Gmail connected successfully')}`);
     } catch (e) {
-      return res.redirect(`http://localhost:3000/setup?error=${encodeURIComponent(String(e))}`);
+      return res.redirect(`${frontendUrl}/setup?error=${encodeURIComponent(String(e))}`);
     }
   }
 }
